@@ -5,6 +5,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Deterministic>false</Deterministic>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>testinterrogation</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <ItemGroup>
