@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TestInterrogationConsole
 {
-    public class TestMethodFinder
+    public class Program
     {
         public static void Main(string[] args)
         {
@@ -18,7 +18,7 @@ namespace TestInterrogationConsole
                 return;
             }
 
-            string csprojFilePath = args[0];
+            var csprojFilePath = args[0]?.Trim();
 
             if (!File.Exists(csprojFilePath))
             {
@@ -30,9 +30,9 @@ namespace TestInterrogationConsole
 
             try
             {
-                string projectDirectory = Path.GetDirectoryName(csprojFilePath);
-                List<string> sourceFiles = GetCSharpSourceFiles(projectDirectory);
-                List<string> missingCategoryMethods = new List<string>();
+                var projectDirectory = Path.GetDirectoryName(csprojFilePath) ?? string.Empty;
+                var sourceFiles = GetCSharpSourceFiles(projectDirectory);
+                var missingCategoryMethods = new List<string>();
 
                 foreach (string sourceFile in sourceFiles)
                 {
@@ -41,7 +41,7 @@ namespace TestInterrogationConsole
 
                 if (missingCategoryMethods.Any())
                 {
-                    Console.WriteLine("\nMethods Missing [TestCategory] Attribute:");
+                    Console.WriteLine($"{Environment.NewLine}Methods Missing [TestCategory] Attribute:");
                     foreach (string method in missingCategoryMethods)
                     {
                         Console.WriteLine($"- {method}");
@@ -49,7 +49,7 @@ namespace TestInterrogationConsole
                 }
                 else
                 {
-                    Console.WriteLine("\nAll TestMethods have the [TestCategory] attribute.");
+                    Console.WriteLine($"{Environment.NewLine}All TestMethods have the [TestCategory] attribute.");
                 }
             }
             catch (Exception ex)
