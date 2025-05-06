@@ -34,7 +34,7 @@ namespace TestInterrogationConsole
                 var sourceFiles = GetCSharpSourceFiles(projectDirectory);
                 var missingCategoryMethods = new List<string>();
 
-                foreach (string sourceFile in sourceFiles)
+                foreach (var sourceFile in sourceFiles)
                 {
                     ProcessSourceFile(sourceFile, missingCategoryMethods);
                 }
@@ -42,7 +42,7 @@ namespace TestInterrogationConsole
                 if (missingCategoryMethods.Any())
                 {
                     Console.WriteLine($"{Environment.NewLine}Methods Missing [TestCategory] Attribute:");
-                    foreach (string method in missingCategoryMethods)
+                    foreach (var method in missingCategoryMethods)
                     {
                         Console.WriteLine($"- {method}");
                     }
@@ -74,11 +74,11 @@ namespace TestInterrogationConsole
         {
             try
             {
-                string fileContent = File.ReadAllText(sourceFile);
-                SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(fileContent);
-                CompilationUnitSyntax root = syntaxTree.GetCompilationUnitRoot();
+                var fileContent = File.ReadAllText(sourceFile);
+                var syntaxTree = CSharpSyntaxTree.ParseText(fileContent);
+                var root = syntaxTree.GetCompilationUnitRoot();
 
-                string namespaceName = root.DescendantNodes().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString() ?? "";
+                var namespaceName = root.DescendantNodes().OfType<NamespaceDeclarationSyntax>().FirstOrDefault()?.Name.ToString() ?? "";
 
                 var testClasses = root.DescendantNodes().OfType<ClassDeclarationSyntax>()
                     .Where(c => c.Modifiers.Any(SyntaxKind.PublicKeyword) &&
@@ -87,7 +87,7 @@ namespace TestInterrogationConsole
 
                 foreach (var classDeclaration in testClasses)
                 {
-                    string className = classDeclaration.Identifier.ToString();
+                    var className = classDeclaration.Identifier.ToString();
 
                     var testMethods = classDeclaration.Members.OfType<MethodDeclarationSyntax>()
                         .Where(m => m.Modifiers.Any(SyntaxKind.PublicKeyword) &&
@@ -96,8 +96,8 @@ namespace TestInterrogationConsole
 
                     foreach (var methodDeclaration in testMethods)
                     {
-                        string methodName = methodDeclaration.Identifier.ToString();
-                        bool hasTestCategory = methodDeclaration.AttributeLists.SelectMany(al => al.Attributes)
+                        var methodName = methodDeclaration.Identifier.ToString();
+                        var hasTestCategory = methodDeclaration.AttributeLists.SelectMany(al => al.Attributes)
                             .Any(a => a.Name.ToString() == "TestCategory");
 
                         if (!hasTestCategory)
