@@ -52,5 +52,12 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Code Rush - DEvExpress
 .cr/
+
+# Visual Studio Code
 .vs/
+
+# Visual Studio
+*.user
